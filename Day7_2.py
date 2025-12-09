@@ -35,7 +35,7 @@ def count_timeline(grid):
             if cell=="^":
                 if c-1>=0:
                     next_ways[c-1]+=w
-                if c+1< cols:
+                if c+1<cols:
                     next_ways[c+1]+=w
                 
             else: 
