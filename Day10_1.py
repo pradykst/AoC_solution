@@ -1,7 +1,7 @@
 from collections import deque
 import re
 
-# Regexes for parsing
+                     
 PATTERN_RE = re.compile(r'\[([.#]+)\]')
 BUTTONS_RE = re.compile(r'\(([^)]*)\)')
 
@@ -11,25 +11,25 @@ def parse_line(line: str):
       [.##.] (3) (1,3) ... {ignored}
     Returns: (n_lights, target_mask, button_masks_list)
     """
-    # Drop the joltage part in { ... }
+                                      
     if "{" in line:
         line = line.split("{", 1)[0]
     line = line.strip()
 
-    # 1) Pattern
+                
     m = PATTERN_RE.search(line)
     if not m:
         raise ValueError(f"No pattern found in line: {line}")
     pattern = m.group(1)
     n = len(pattern)
 
-    # Convert pattern to target bitmask
+                                       
     target_mask = 0
     for i, ch in enumerate(pattern):
         if ch == "#":
             target_mask |= (1 << i)
 
-    # 2) Buttons
+                
     buttons = []
     for group in BUTTONS_RE.findall(line):
         group = group.strip()
@@ -52,7 +52,7 @@ def min_presses(n: int, target_mask: int, buttons):
     Return minimum number of presses to reach target_mask from 0.
     """
     if target_mask == 0:
-        return 0  # already all off
+        return 0                   
 
     max_state = 1 << n
     dist = [-1] * max_state
@@ -75,7 +75,7 @@ def min_presses(n: int, target_mask: int, buttons):
                 dist[nxt] = d + 1
                 q.append(nxt)
 
-    # If unreachable (should not happen for valid inputs)
+                                                         
     return None
 
 def solve(path: str = "input10.txt") -> int:
@@ -89,11 +89,11 @@ def solve(path: str = "input10.txt") -> int:
             n, target_mask, buttons = parse_line(line)
             presses = min_presses(n, target_mask, buttons)
             if presses is None:
-                # You can also choose to skip, but usually all are solvable
+                                                                           
                 raise ValueError(f"Machine unsolvable for line: {line}")
             total_presses += presses
 
     return total_presses
 
 if __name__ == "__main__":
-    print(solve("input10.txt"))  # change filename if needed
+    print(solve("input10.txt"))                             
